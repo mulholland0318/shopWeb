@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, width=device-width" />
+<title>名大厨-大厨上门</title>
+<script src="js/mui.min.js"></script>
+<link href="css/mui.css" rel="stylesheet" />
+<link href="css/zhangwentao.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="fonts/iconfont.css" />
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/zhangwentao.js"></script>
+<body>
+	<!--头条-->
+	<header class="mui-bar mui-bar-nav title-bgcolor">
+		<a class="mui-icon mui-action-menu logo_one mui-pull-left"></a>
+		<h1 class="mui-title">我的</h1>
+	</header>
+	<!--背景墙-->
+	<div class="wall">
+		<div class="wall_name">
+			<div class="wall_head"></div>
+			<P id="wall_minzi">用户你好</P>
+		</div>
+	</div>
+	<!--用户须知-->
+	<div class="user">
+		<div class="user_xhxz">
+			<a href="html/yhxz.html"> <img src="images/img_12.png">
+				<P>用户须知</P> <img src="images/img_14.png" id="but_7">
+			</a>
+		</div>
+		<div class="user_xhxz">
+			<img src="images/img_13.png">
+			<P>客服电话</P>
+			<a href="tel://400-005-4288"><P id="wenzi">400-005-4288</P></a>
+		</div>
+	</div>
+	<!--退出登录-->
+	<div class="denlu">
+		<P>退出登录</P>
+	</div>
+	<!--退出登录框-->
+	<div class="tc">
+		<div class="tc_tankuan">
+			<div class="tc_wenzi">
+				<P>
+					退出后不会删除任何历史数据，下次登陆依然可以使用本<br /> 账号
+				</P>
+			</div>
+			<div class="tc_tishi">
+				<P style="color: red">退出登录</P>
+			</div>
+			<div class="tc_tishi1">
+				<P id="quxiao">取消</P>
+			</div>
+		</div>
+	</div>
+	<!--底部导航-->
+	<footer class="aui-nav" id="footer">
+		<ul class="aui-bar-tab" id="parent">
+			<li><a href="index.html"> <img src="images/foot2.png" />
+					<p class="aui-text-danger">大厨</p>
+			</a></li>
+			<li><a href="order.html"> <img src="images/foot3.png" />
+					<p>订单</p>
+			</a></li>
+			<li><a href="my.html"> <img src="images/foot1.png" />
+					<p>我的</p>
+			</a></li>
+		</ul>
+	</footer>
+	<script type="text/javascript">
+		check_login();
+		if(costum_token == "null" || !costum_token) window.location.href = "/wxchat/html/register.html?note=1&od="+costum_openid+"&ie="+costum_phone;
+		$("#wall_minzi").html(costum_phone);
+		$(".tc_tishi p").click(function(){
+			$.ajax({
+				type: "POST", //用POST方式传输
+				dataType: "json", //数据格式:JSON
+				url: '/webaction/userlogout',
+				data: {
+					"token":costum_token,
+					"idphone":costum_phone
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown) { },
+				success: function (data){
+					window.location.href = "/wxchat/html/register.html?note=2&od="+costum_openid+"&ie="+costum_phone;
+				}
+			})
+		})
+	</script>
+</body>
+</html>

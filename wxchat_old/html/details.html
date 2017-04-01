@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1," />
+    <title>名大厨-大厨上门</title>
+    <script src="../js/mui.min.js"></script>
+    <link href="../css/mui.css" rel="stylesheet"/>
+    <link href="../css/zhangwentao.css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../js/zhangwentao_min.js"></script>
+</head>
+<body>
+<!--头条-->
+<header class="mui-bar mui-bar-nav title-bgcolor">
+    <a class="mui-icon mui-action-menu logo_one mui-pull-left"></a>
+    <h1 class="mui-title">订单详情</h1>
+</header>
+<!--套餐详情-->
+<div class="detail_zong">
+<div class="details">
+   <div class="details_tu"></div>
+    <P>套餐详情</P>
+</div>
+<div class="details_nr">
+    <p style="display:none;">订单号码：</p>
+    <p>服务厨师：</p>
+    <p>套餐类型：</p>
+    <p>套餐价格：</p>
+    <p>就餐地址：</p>
+    <p>就餐时间：</p>
+</div>
+<div class="details">
+    <div class="details_tu"></div>
+    <P>订单详情</P>
+</div>
+<div class="details_nr1">
+    <P></P>
+<!--     <input type="button" value=""> -->
+</div>
+
+<div class="details">
+    <div class="details_tu"></div>
+    <P>订单详情</P>
+</div>
+<div class="details_nr">
+    <P>服务费：</P>
+</div>
+<div class="details">
+    <div class="details_tu"></div>
+    <P>联系方式</P>
+</div>
+<div class="details_nr">
+    <P>联系人：</P>
+    <P>手机号码：</P>
+    <P>下单时间：</P>
+</div>
+</div>
+<script type="text/javascript">
+check_login();
+
+var order;
+$.ajax({
+    type: "POST", //用POST方式传输
+    dataType: "json", //数据格式:JSON
+    url: '/webaction/orderInfo',
+    data: {
+	    	"orderid":GetQueryString("orderid"),
+	    	"token":costum_token,
+	    	"idphone":costum_phone,
+    	},
+    error: function (XMLHttpRequest, textStatus, errorThrown) { },
+    success: function (data){
+    	dealWithReturnValue(data.msgCode);
+    	
+    	order = data.content;
+    	$(".details_nr p:eq(0)")[0].innerHTML+="<span style='float:right;margin-right:10px;color:#666;'>"+order.orderId+"</span>";
+    	$(".details_nr p:eq(1)")[0].innerHTML+="<span style='float:right;margin-right:10px;color:#666;'>"+order.chefName+"</span>";
+    	$(".details_nr p:eq(2)")[0].innerHTML+="<span style='float:right;margin-right:10px;color:#666;'>"+order.mealName+"</span>";
+    	$(".details_nr p:eq(3)")[0].innerHTML+="<span style='float:right;margin-right:10px;color:#666;'>"+order.mealPrice+"</span>";
+    	$(".details_nr p:eq(4)")[0].innerHTML+="<span style='float:right;margin-right:10px;color:#666;'>"+order.address+"</span>";
+    	$(".details_nr p:eq(5)")[0].innerHTML+="<span style='float:right;margin-right:10px;color:#666;'>"+order.dinnerDate+"</span>";
+
+    	$(".details_nr p:eq(6)")[0].innerHTML+="<span style='float:right;margin-right:10px;color:#666;'>"+order.serviceCost+"</span>";
+
+    	$(".details_nr p:eq(7)")[0].innerHTML+="<span style='float:right;margin-right:10px;color:#666;'>"+order.contactPerson+"</span>";
+    	$(".details_nr p:eq(8)")[0].innerHTML+="<span style='float:right;margin-right:10px;color:#666;'>"+order.contactPhone+"</span>";
+    	$(".details_nr p:eq(9)")[0].innerHTML+="<span style='float:right;margin-right:10px;color:#666;'>"+order.orderDate+"</span>";
+    	
+    	changeStatus(order.status);
+    }
+});
+
+function changeStatus(status){
+	
+	if(status == "paid"){
+    	$(".details_nr1 p")[0].innerHTML = "待完成";
+    	
+    	var input = $('<input type="button" style="margin-right:10px;" value="">').val("完成订单");
+    	input.click(function(){
+    		completeOrder("notEvaluated");
+    	});
+    	$(".details_nr1").append(input);
+	}else if(status == "finished"){
+		$(".details_nr1 p")[0].innerHTML = "已完成";
+	}else{
+		$(".details_nr1 p")[0].innerHTML = "待评价";
+		
+		$(".details_nr1 input").remove();
+		var input = $('<input type="button" style="margin-right:10px;" value="">').val("评价晒图");
+    	input.click(function(){
+    		window.location.href = '/wxchat/html/upload_pictures.html'+params+'&orderid='+order.orderId;
+    	});
+    	$(".details_nr1").append(input);
+	}
+}
+
+function completeOrder(status){
+	$.ajax({
+	    type: "POST", //用POST方式传输
+	    dataType: "json", //数据格式:JSON
+	    url: '/webaction/updateOrderStatus',
+	    data: {
+		    	"orderId":GetQueryString("orderid"),
+		    	"token":costum_token,
+		    	"idphone":costum_phone,
+	    	},
+	    error: function (XMLHttpRequest, textStatus, errorThrown) { },
+	    success: function (data){
+	    	dealWithReturnValue(data.msgCode);
+	    	
+    		changeStatus(status);
+	    }
+	});
+}
+
+</script>
+</body>
+
+</html>

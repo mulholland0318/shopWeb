@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, width=device-width">
+    <title>名大厨-大厨上门</title>
+    <link href="../css/mui.css" rel="stylesheet"/>
+    <link href="../css/zhangwentao.css" rel="stylesheet"/>
+    <link href="../css/rl.css">
+    <script src="../js/jquery-1.8.3.min.js"></script>
+    <script src="../js/rl.js"></script>
+    <script src="../js/mui.min.js"></script>
+    <script type="text/javascript" src="../js/zhangwentao_min.js"></script>
+</head>
+<script>
+	$(function(){
+		$(".order_shijian2").click(function(){
+			$(this).find("input").attr("checked","checked").siblings().removeAttr("checked")
+		})
+	})
+</script>
+<body>
+<!--头条-->
+<header class="mui-bar mui-bar-nav title-bgcolor">
+    <a class="mui-icon mui-action-menu logo_one mui-pull-left"></a>
+    <h1 class="mui-title">预约厨师</h1>
+</header>
+<!--厨师资料-->
+<div class="d1"></div>
+ <div class="appointment">
+     <div class="appointment_head">
+     </div>
+     <div class="appointment_name">
+         <p></p>
+         <P>擅长菜系:<span></span> </P>
+         <P>服务数量:<span></span></P>
+     </div>
+ </div>
+<!--用餐信息-->
+<div class="appointment_comment">
+    <div class="appointment_wen">
+        <img src="../images/img_11.png">
+        <P>用户评论&nbsp;(<span style="color:red">*</span><P>为必填选项）</P></P>
+    </div>
+</div>
+<!--订购信息-->
+<div id="datePlugin"></div>
+<div class="order">
+    <div class="order_shijian">
+        <P>就餐时间<span style="color:red">*</span></P>
+        <input type="text" value="" class="inp" id="inp" readOnly="true">
+    </div>
+    <div class="order_shijian">
+     <P>就餐地点<span style="color:red">*</span></P>
+     <input type="text" value="">
+    </div>
+    <div class="order_shijian1">
+        <P>姓名<span style="color:red">*</span></P>
+        <input type="text" value="">
+    </div>
+    <div class="order_shijian1">
+        <P>联系方式<span style="color:red">*</span></P>
+        <input type="text" value="">
+    </div>
+    <div class="order_shijian1">
+        <P>套餐类型<span style="color:red">*</span></P>
+        <select style="float: right;width:70%; height: 38px;">
+            <option value="" style="border:#FFFFFF;font-family:华文细黑; ">请选择</option>
+<!--             <option value ="1">四菜一汤</option> -->
+<!--             <option value ="2">六菜一汤</option> -->
+<!--             <option value="3">商务宴</option> -->
+        </select>
+    </div>
+    <div class="order_shijian1"id="bzxx">
+        <P>备注信息<span style="color:red">*</span></P>
+        <input type="text" value="" id="mydiv">
+    </div>
+    <div class="clear"></div>
+</div>
+<div id="c">
+    <div class="order_shijian2" id="gai">
+        <P>自备食材<span style="color:red">*</span></P>
+        <input type="radio" name="sex" id="but_5" value="owned"/>
+    </div>
+    <div class="order_shijian2">
+        <P>代买食材<span style="color:red">*</span></P>
+        <input type="radio" name="sex" id="but_6" value="purchase"/>
+    </div>
+</div>
+<input type="button" value="微信支付" id="but_3">
+<div class="clendar_o">
+<div class="clendar_o1"></div>
+<div class="calendar">
+    <div class="calendar_time">
+        <div class="calendar_q  inner time_new new_c">
+            <P>周一</P>
+               <P>11-14</P>
+        </div>
+        <div class="calendar_q  inner">
+            <P>周二</P>
+            <P>11-15</P>
+        </div>
+        <div class="calendar_q  inner">
+            <P>周三</P>
+            <P>11-16</P>
+        </div>
+        <div class="calendar_q  inner">
+            <P>周四</P>
+            <P>11-17</P>
+        </div>
+        <div class="calendar_q  inner">
+            <P>周五</P>
+            <P>11-18</P>
+        </div>
+<!--         <div class="calendar_q  inner"> -->
+<!--             <P>周六</P> -->
+<!--             <P>11-19</P> -->
+<!--         </div> -->
+<!--         <div class="calendar_q  inner"> -->
+<!--             <P>周日</P> -->
+<!--             <P>11-20</P> -->
+<!--         </div> -->
+    </div>
+    <div class="calendar_date ">
+        <div class="date dete_a1">10:00</div>
+        <div class="date dete_a1">10:30</div>
+        <div class="date dete_a1">11:00</div>
+        <div class="date dete_a1">11:30</div>
+        <div class="date dete_a1">12:00</div>
+        <div class="date dete_a1">12:30</div>
+        <div class="date dete_a1">13:00</div>
+        <div class="date dete_a1">13:30</div>
+        <div class="date dete_a1">14:00</div>
+        <div class="date dete_a1">16:00</div>
+        <div class="date dete_a1">16:30</div>
+        <div class="date dete_a1">17:00</div>
+        <div class="date dete_a1">17:30</div>
+        <div class="date dete_a1">18:00</div>
+        <div class="date dete_a1">18:30</div>
+        <div class="date dete_a1">19:00</div>
+        <div class="date dete_a1">19:30</div>
+    </div>
+</div>
+<div class="bnt_zong">
+    <button class="bnt_1" id="but_1">确定</button>
+    <button class="bnt_2" id="but_2">取消</button>
+</div>
+</div>
+<script type="text/javascript">
+
+	check_login();
+
+	var content;
+	
+	function onBridgeReady(){
+	   WeixinJSBridge.invoke('getBrandWCPayRequest', {
+	           "appId" : content.appId,
+	           "timeStamp" : content.timeStamp,         //时间戳，自1970年以来的秒数     
+	           "nonceStr" : content.nonceStr, //随机串     
+	           "package" : content.prepayId,     
+	           "signType" : content.prepay,         //微信签名方式：     
+	           "paySign" : content.paySign //微信签名 
+	       },
+	       function(res){
+	           if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+					window.location.href = "/wxchat/order.html"+params;	        	   
+	           }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
+	       }
+	   ); 
+	}
+	function wxPay(){
+		if (typeof WeixinJSBridge == "undefined"){
+		   if( document.addEventListener ){
+		       document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+		   }else if (document.attachEvent){
+		       document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+		       document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+		   }
+		}else{
+		   onBridgeReady();
+		}
+	}
+	
+	$("#but_3").click(function(){
+		pay();
+	});
+	
+	$.ajax({
+	    type: "POST", //用POST方式传输
+	    dataType: "json", //数据格式:JSON
+	    url: '/webaction/chefInfoAndSchedule',
+	    data: {
+		    	"chefId":GetQueryString("chefId")
+	    	},
+	    error: function (XMLHttpRequest, textStatus, errorThrown) { },
+	    success: function (data){
+	    	dealWithReturnValue(data.msgCode);
+	    	
+	    	var meals = data.meals;
+	    	$(meals).each(function(index, meal){
+	    		var option = $("<option value='"+meal.mealId+"'>"+meal.mealName+"("+meal.mealPrice+"元)</option>");
+	    		$("select").append(option);
+	    	});
+	    
+	    	var chef = data.chef;
+	    	$(".appointment_head").append($("<img src='"+pic_partern_head+chef.headImgUrl+"'>"))
+	    	$(".appointment_name p:eq(0)").html(chef.name);
+	    	$(".appointment_name p:eq(1) span").html(chef.style);
+	    	$(".appointment_name p:eq(2) span").html(chef.count);
+	    	
+	    	content_rl = data.content;
+	    	
+	    	if(content_rl == null){
+	    		var d = new Date();
+	    		for(var i=0; i<= 5; i++){
+		    		$(".calendar_q:eq("+index+") p:eq(0)").html("星期" + "日一二三四五六".charAt(d.getDay()));
+		    		$(".calendar_q:eq("+index+") p:eq(1)").html(d.getMonth()+'-'+d.getDate());
+	    			d.setDate(d.getDate() + 1);
+	    		}
+	    		return;
+	    	}
+	    	
+	    	$(content_rl).each(function(index, time){
+	    		if(index == 5) return;
+	    		$(".calendar_q:eq("+index+") p:eq(0)").html(time.weekName);
+	    		$(".calendar_q:eq("+index+") p:eq(1)").html(time.date.substring(5, 10));
+	    	});
+	    	
+	    	initCalendar_date(content_rl[0]);
+	    }
+	});
+	
+	function pay(){
+		if(!costum_openid || costum_openid == "null") window.location.href = "/webaction/goToForwardPage";
+		var ua = window.navigator.userAgent.toLowerCase();
+		if(ua.match(/MicroMessenger/i) != 'micromessenger'){
+			window.location.href = "/webaction/goToForwardPage";
+			return;
+		}
+		var required = {
+		    	"idphone":costum_phone,
+		    	"token":costum_token,
+		    	"mealId":$("select").val(),
+		    	"note":$("#mydiv").val(),
+		    	"dinnerDate":$("#inp").val().substring(4, 14),
+		    	"dinnerTime":$("#inp").val().substring(15, $("#inp").val().length),
+		    	"meatPlace":$(".order_shijian:eq(1) input").val(),
+		    	"contactPerson":$(".order_shijian1:eq(0) input").val(),
+		    	"contactPhone":$(".order_shijian1:eq(1) input").val(),
+		    	"chefId":GetQueryString("chefId"),
+		    	"ingredients":$(":radio[checked]").val(),
+		    	"od":costum_openid
+	    	};
+		var flag = validationRequired(required);
+		if( flag == 1){
+			alert("带星号项为必填，请确认！");
+			return;
+		}else if(flag == 2){
+			alert("联系方式格式不正确，请确认！");
+			return;
+		}
+		$.ajax({
+		    type: "POST", //用POST方式传输
+		    dataType: "json", //数据格式:JSON
+		    url: '/webaction/saveOrder',
+		    data: required,
+		    error: function (XMLHttpRequest, textStatus, errorThrown) { },
+		    success: function (data){
+		    	dealWithReturnValue(data.msgCode);
+		    	
+		    	content = data.content;
+		    	wxPay();
+		    }
+		});
+	}
+	
+	function validationRequired(required){
+		for(var p in required){
+			if(isNullOrEmpty(required[p].replace(/(^\s*)|(\s*$)/g, ""))){
+				return 1;
+			}else{
+				if(p == 'contactPhone'){
+					 var reg = /^0?1[3|4|5|7|8][0-9]\d{8}$/;
+					 if (!reg.test(required[p])) {
+					      return 2;
+					 };
+				}
+			}
+		}
+	}
+	
+	function isNullOrEmpty(strVal) {
+		if (strVal == '' || strVal == null || strVal == undefined) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+</script>
+</body>
+</html>

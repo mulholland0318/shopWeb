@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>名大厨-大厨上门</title>
+<script src="js/mui.min.js"></script>
+<link href="css/mui.css" rel="stylesheet" />
+<link href="css/zhangwentao.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="fonts/iconfont.css" />
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/zhangwentao.js"></script>
+</head>
+<body style="background: #f9f9f9">
+	<header class="mui-bar mui-bar-nav title-bgcolor">
+		<a class="mui-icon mui-action-menu logo_one mui-pull-left"></a>
+		<h1 class="mui-title">厨师</h1>
+		<a href="tel:400-005-4288">
+			<div class="phone"></div>
+		</a>
+	</header>
+	<!-- 主页面内容容器 -->
+	<div class="mui-content">
+		<div class="d"></div>
+	</div>
+
+	<!--底部导航-->
+	<footer class="aui-nav" id="footer">
+		<ul class="aui-bar-tab" id="parent">
+			<li><a href="index.html"> <img src="images/foot2.png" />
+					<p class="aui-text-danger">大厨</p>
+			</a></li>
+			<li><a href="order.html"> <img src="images/foot3.png" />
+					<p>订单</p>
+			</a></li>
+			<li><a href="my.html"> <img src="images/foot1.png" />
+					<p>我的</p>
+			</a></li>
+		</ul>
+	</footer>
+
+
+	<script type="text/javascript" charset="utf-8">
+		var d1 = $('<div class="d1"></div>');
+		var currentPage = 1;
+		var getNewFlag = true;
+		
+		getChefs();
+		scrollGetData(getChefs);
+		
+		function getChefs(){
+			if(!getNewFlag) return;
+			if(d1) d1.remove();
+			
+			$.ajax({
+				type: "POST", //用POST方式传输
+			    dataType: "json", //数据格式:JSON
+			    url: '/webaction/webcheflist',
+			    async: false,
+			    data: {
+			 	   "currentPage" : currentPage,
+			    },
+			    error: function (XMLHttpRequest, textStatus, errorThrown) { },
+			    success: function (data){
+		    		dealWithReturnValue(data.msgCode);
+		    	
+					var chefs = data.content;
+					$(chefs).each(function(index, chef){
+						appendChefInfor(chef);
+					});
+					$('.mui-content').append(d1);
+					
+					if(chefs.length < 10){
+						getNewFlag = false;
+					}else{
+						currentPage += 1;
+					}
+				}
+			});
+		}
+	   
+		function appendChefInfor(chef){
+		 
+			var business_tu = $('<div class="business_tu"><img src="' + pic_partern_dish + chef.dishImgUrl + '"></div>');
+			
+			var business_content = $('<div class="business_content"><div class="business_xian"><img src="images/img_03.png"></div></div>');
+			business_content.append($('<div class="business_head"><img src="' + pic_partern_head + chef.headImgUrl + '"></div>'));
+			business_content.append($('<div class="business_name"><P>' + chef.name + '</P></div>'));
+			business_content.append($('<div class="business_cai"><P>擅长菜系:<span>' + chef.style + '</span></P><P>服务数量:<span>'+chef.count+'</span></P></div>'));
+// 			business_content.append($('<div class="business_location"><img src="images/img_05.png"><div class="km"><p>距离：120km</p></div></div>'));
+			
+			var business = $('<div class="business"></div>');
+			business.append(business_tu);
+			business.append(business_content);
+			
+			var business_a = $('<a href="html/chef.html'+params+'&chefid='+chef.id+'"></a>');
+			business_a.append(business);
+			
+			$('.mui-content').append(business_a);
+		}
+	   
+   </script>
+
+</body>
+</html>

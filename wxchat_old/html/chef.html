@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, width=device-width"/>
+    <title>名大厨-大厨上门</title>
+    <script src="../js/mui.min.js"></script>
+    <link href="../css/mui.css" rel="stylesheet"/>
+    <link href="../css/zhangwentao.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../fonts/iconfont.css"/>
+	<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../js/zhangwentao_min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        mui.init();
+    </script>
+
+</head>
+<body style="background: #FFFFFF">
+<header class="mui-bar mui-bar-nav title-bgcolor">
+    <a class="mui-icon mui-action-menu logo_one mui-pull-left"></a>
+    <h1 class="mui-title">厨师详情</h1>
+</header>
+      <!--轮播-->
+<div class="d1"></div>
+<div class="mui-content">
+    <div class="mui-slider">
+        <div class="mui-slider-group mui-slider-loop home_page-tupian">
+            <!--支持循环，需要重复图片节点   0  1 2 3 0 1 2 3-->
+            <div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="" /></a></div>
+            <div class="mui-slider-item"><a href="#"><img src="" /></a></div>
+            <div class="mui-slider-item"><a href="#"><img src="" /></a></div>
+            <div class="mui-slider-item"><a href="#"><img src="" /></a></div>
+            <div class="mui-slider-item"><a href="#"><img src="" /></a></div>
+            <!--支持循环，需要重复图片节点-->
+            <div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="" /></a></div>
+        </div>
+        <!--//轮播图中间底部圆点-->
+        <!--<div class="mui-slider-indicator">-->
+            <!--<div class="mui-indicator mui-active"></div>-->
+            <!--<div class="mui-indicator"></div>-->
+            <!--<div class="mui-indicator"></div>-->
+            <!--<div class="mui-indicator"></div>-->
+        <!--</div>-->
+    </div>
+</div>
+        <!--厨师介绍-->
+<div class="chef_name">
+    <div class="cher_back">
+        <img src="">
+        <div class="cher_head">
+        </div>
+        <div class="cher_name1"><p></p></div>
+        <div class="cher_cai">
+            <P>擅长菜系:<span></span> </P>
+            <P>服务数量:<span></span></P>
+        </div>
+    </div>
+</div>
+      <!--用户评论-->
+<div class="comment">
+    <div class="comment_wen"><P>用户评论</P></div>
+</div>
+ <!--评论列表-->
+  <div class="list">
+  </div>
+<a href="appointment.html"><input type="button" value="预约厨师" id="but_4"></a>
+<script type="text/javascript">
+	
+	$.ajax({
+        type: "POST", //用POST方式传输
+        dataType: "json", //数据格式:JSON
+        url: '/webaction/chefinfoAndcomments',
+        data: {"chefid":GetQueryString("chefid")},
+        error: function (XMLHttpRequest, textStatus, errorThrown) { },
+        success: function (data){
+	    	dealWithReturnValue(data.msgCode);
+        	
+        	var chef = data.content.chef;
+        	$(".mui-slider-item:eq(1)").children().children().attr("src", pic_partern_dish+chef.dishImgUrl);
+     		$(".cher_head").append($('<img src="'+pic_partern_head+chef.headImgUrl+'" style="width:80px;height:80px;-moz-border-radius:50%;'+
+     			    '-webkit-border-radius: 50%;margin-top:5px;">'));
+     		$(".cher_name1 p")[0].innerHTML = chef.name;
+     		$(".cher_cai p span")[0].innerHTML = chef.style;
+     		$(".cher_cai p span")[1].innerHTML = chef.count;
+     		
+     		var comments = data.content.comments;
+     		$(comments).each(function(index, comment){
+     			appendComment(comment);
+     	   })
+     	   
+        }
+    });
+	
+	function appendComment(comment){
+		var list_lb = $('<div class="list_lb"></div>');
+		var chef_pl = $('<div class="chef_pl"></div>');
+		chef_pl.append($('<p>'+comment.userPhone+'</p>'));//昵称
+		chef_pl.append($('<p>'+comment.contents+'</p>'));//内容
+		chef_pl.append($('<p>'+comment.date+'</p>'));//时间
+		list_lb.append(chef_pl);
+		$(".list").append(list_lb);
+	}
+	$("[href=\"appointment.html\"]")[0].href = "#";
+	$("[href=\"#\"]").click(function(){
+		window.location.href = "/wxchat/html/appointment.html"+params+"&chefId="+GetQueryString("chefid");
+	});
+	
+</script>
+</body>
+</html>

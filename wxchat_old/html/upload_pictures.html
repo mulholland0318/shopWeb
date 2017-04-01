@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, width=device-width"/>
+    <title>名大厨-大厨上门</title>
+    <link href="../css/mui.css" rel="stylesheet"/>
+    <link href="../css/zhangwentao.css" rel="stylesheet"/>
+    <link href="../css/common.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../fonts/iconfont.css"/>
+    <script src="../js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../js/date.js" ></script>
+    <script type="text/javascript" src="../js/iscroll.js" ></script>
+    <script type="text/javascript" src="../js/zhangwentao_min.js"></script>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="../js/mui.min.js"></script>
+</head>
+<body style="background:#F8F8F8;">
+<header class="mui-bar mui-bar-nav title-bgcolor">
+    <a class="mui-icon mui-action-menu logo_one mui-pull-left"></a>
+    <h1 class="mui-title">晒图评价</h1>
+</header>
+<div class="upload">
+    <div class="upload_pj">
+        <textarea placeholder="输入评价信息"  id="input_5"></textarea>
+    </div>
+    <div class="upload_img">
+         <div class="upload_xj">
+             <div class="xj" id="xj"></div>
+         </div>
+    </div>
+</div>
+<button id="but_12">发表评论</button>
+</body>
+<script>
+	check_login();
+    $(function(){
+        $("#but_12").click(function(){
+        	uploadComment();
+        });
+    })
+    
+    function uploadComment(){
+    	$.ajax({
+    	    type: "POST", //用POST方式传输
+    	    dataType: "json", //数据格式:JSON
+    	    url: '/webaction/saveComment',
+    	    data: {
+    		    	"orderId":GetQueryString("orderid"),
+    		    	"token":costum_token,
+    		    	"idphone":costum_phone,
+    		    	"contents":$("#input_5").val()
+    	    	},
+    	    error: function (XMLHttpRequest, textStatus, errorThrown) { },
+    	    success: function (data){
+    	    	dealWithReturnValue(data.msgCode);
+
+    	    	window.location.href = '/wxchat/order.html'+params;
+    	    }
+    	});
+    }
+</script>
+</html>

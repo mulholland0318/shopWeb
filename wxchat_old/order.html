@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1," />
+    <title>名大厨-大厨上门</title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.css" rel="stylesheet"/>
+    <link href="css/zhangwentao.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="fonts/iconfont.css"/>
+    <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/zhangwentao.js"></script>
+    <script type="text/javascript">
+		check_login();
+		$(function () {
+			$(".order_xuanxian").click(function () {
+				var e = $(this).index();
+				$(".anniu").eq(e).fadeIn().siblings(".anniu").fadeOut();
+				$(".order_xuanxian").removeClass("cur").eq(e).addClass("cur");
+		    	$('.order_nr2').empty();
+		    	$('.order_nr1').empty();
+		    	$('.order_nr3').empty();
+		    	getNew = {
+	    			"paid" : true,
+	    			"notEvaluated" : true,
+	    			"finished" : true
+	    		}
+		    	getNewPage = {
+	    			"paid" : 1,
+	    			"notEvaluated" : 1,
+	    			"finished" : 1	
+	    		}
+				if(e == 0){
+					now_type = TYPE_PAID;
+					getOrders();
+				}else if(e == 1){
+					now_type = TYPE_NOTEVALUATED;
+					getOrders();
+				}else{
+					now_type = TYPE_FINISHED;
+					getOrders();
+				}
+			});
+		});
+    </script>
+</head>
+<body>
+<!--头条-->
+<header class="mui-bar mui-bar-nav title-bgcolor">
+    <a class="mui-icon mui-action-menu logo_one mui-pull-left"></a>
+    <h1 class="mui-title">订单</h1>
+</header>
+<!--选项卡-->
+<div class="zong_nr">
+    <div class="order_xuanxian cur">待完成<div class="xian"></div></div>
+    <div class="order_xuanxian">待评价<div class="xian"></div></div>
+    <div class="order_xuanxian">已完成</div>
+    <!--选项卡内容-->
+<!--1-->
+    <div class="order_nr1 anniu">
+    </div>
+
+<!--2-->
+    <div class="order_nr2 anniu">
+    </div>
+
+<!--3-->
+    <div class="order_nr3 anniu">
+    </div>
+
+</div>
+<!--底部导航-->
+<footer class="aui-nav" id="footer">
+    <ul class="aui-bar-tab" id="parent">
+        <li>
+            <a href="index.html">
+                <img src="images/foot2.png"  />
+                <p class="aui-text-danger">大厨</p>
+            </a>
+        </li>
+        <li>
+            <a href="order.html">
+                <img src="images/foot3.png"  />
+                <p>订单</p>
+            </a>
+        </li>
+        <li>
+            <a href="my.html">
+                <img src="images/foot1.png"  />
+                <p>我的</p>
+            </a>
+        </li>
+    </ul>
+</footer>
+<script type="text/javascript">
+	var TYPE_PAID = "paid";
+	var TYPE_NOTEVALUATED = "notEvaluated";
+	var TYPE_FINISHED = "finished";
+	
+	var getNew = {
+		"paid" : true,
+		"notEvaluated" : true,
+		"finished" : true
+	}
+	
+	var getNewPage = {
+		"paid" : 1,
+		"notEvaluated" : 1,
+		"finished" : 1	
+	}
+	
+	var now_type = TYPE_PAID;
+	getOrders(now_type);
+
+	scrollGetData(getOrders);
+	
+	function getOrders(){
+		if(!getNew[now_type]) return;
+		$.ajax({
+		    type: "POST", //用POST方式传输
+		    dataType: "json", //数据格式:JSON
+		    url: '/webaction/orderList',
+		    data:{
+		    		"idphone":costum_phone,
+		    		"token":costum_token,
+		    		"status":now_type,
+		    		"currentPage":getNewPage[now_type]
+		    	},
+		    error: function (XMLHttpRequest, textStatus, errorThrown) { },
+		    success: function (data){
+		    	dealWithReturnValue(data.msgCode);
+		    	
+		    	var orders = data.content;
+		    	
+		    	$(orders).each(function(index, order){
+		     	   appendOrder(order, now_type, index);
+		 	   });
+		    	if(orders.length < 10){
+		    		getNew[now_type] = false;
+		    	}else{
+		    		getNewPage[now_type]++;
+		    	}
+		    	
+		    }
+		});
+	}
+	
+	var div_blank = $("<div class='d2'></div>")
+	
+	function appendOrder(order, type, index){
+	    var kuai_tu = $('<div class="kuai_tu"><img src="'+pic_partern_head+order.chefImg+'"><P style="display: inline-block;poster;float: left;margin-top: 119px;margin-left: 25px;font-size: 18px;color: #333333;font-weight:bold;font-family:华文细黑">'+order.chefName+'</P></div>');
+	    var kuai_name = $('<div class="kuai_name"></div>');
+	    kuai_name.append($('<P style="color:#666666;">套餐名称：'+order.mealName+'</P>'));
+	    kuai_name.append($('<P style="color:#666666;">服务费用：'+order.mealPrice+'</P>'));
+	    kuai_name.append($('<P style="color:#666666;">就餐时间：'+order.dinnerDate+'</P>'));
+	    var kuai = $('<div class="kuai"></div>');
+	    kuai.append(kuai_tu);
+	    kuai.append(kuai_name);
+	    
+	    var order_nr_anniu;
+	    
+	    var but_10;
+	    
+	    if(type == 'notEvaluated'){
+	    	but_10 = $('<a class="contain_a" href="/wxchat/html/upload_pictures.html'+params+'&orderid='+order.orderId+'"><input type="button" value="评价晒图" class="but_10"></a>');
+// 		    kuai.append(but_10);
+		    order_nr_anniu = $('.order_nr2');
+	    }else if(type == 'paid'){
+		    but_10 = $('<input type="button" value="完成订单" class="but_10">');
+		    but_10.click(function(){
+	    		completeOrder(order.orderId, index);
+	    	})
+// 		    kuai.append(but_10);
+		    order_nr_anniu = $('.order_nr1');
+	    }else{
+	    	order_nr_anniu = $('.order_nr3');
+	    }
+	    
+	    var details_a = $('<a class="contain_a" href="html/details.html'+params+'&orderid='+order.orderId+'"></a>');
+	    details_a.append(kuai);
+	    
+	    var container_div = $('<div id="'+order.orderId+'"></div>');
+	    
+	    container_div.append(details_a);
+	    container_div.append(but_10);
+	    order_nr_anniu.append(container_div);
+	    order_nr_anniu.append(div_blank);
+	}
+	
+	function completeOrder(orderId, index){
+		if(!confirm("确认完成订单？")) return;
+		$.ajax({
+		    type: "POST", //用POST方式传输
+		    dataType: "json", //数据格式:JSON
+		    url: '/webaction/updateOrderStatus',
+		    data: {
+			    	"orderId":orderId,
+			    	"token":costum_token,
+			    	"idphone":costum_phone,
+		    	},
+		    error: function (XMLHttpRequest, textStatus, errorThrown) { },
+		    success: function (data){
+		    	dealWithReturnValue(data.msgCode);
+		    	
+	    		$(":button :eq("+index+")").remove();
+	    		$("#"+orderId).remove();
+	    		getNewPage["notEvaluated"] = 1;
+	    		getNew["notEvaluated"] = true;
+		    }
+		});
+	}
+</script>
+</body>
+</html>
